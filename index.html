@@ -28,7 +28,7 @@
   <body>
     <header>
       <h1>A Better Houston Power Outage Map</h1>
-      <p>The <a href="https://storymaps.arcgis.com/stories/195bcf03ae0c491f9f14bf77f2c43420" target="_blank">offical map</a> is bloated and its color scheme is disingenuous at best.<br>Here's a better one using the <a href="https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/ckts_713/FeatureServer/0" target="_blank">same data</a>, as of July 13th 12:00 PM</p>
+      <p>The <a href="https://storymaps.arcgis.com/stories/195bcf03ae0c491f9f14bf77f2c43420" target="_blank">offical map</a> is bloated and its color scheme is disingenuous at best.<br>Here's a better one using the <a href="https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/ckts_714/FeatureServer/0" target="_blank">same data</a>, as of July 14th 11:00 AM</p>
     </header>
     <main id="map"></main>
     <footer>
@@ -45,7 +45,9 @@
 
       let etrs = {};
       let zones = L.esri.featureLayer({
-        url: 'https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/ckts_713/FeatureServer/0/',
+        url: 'https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/ckts_714/FeatureServer/0/',
+        where: "Energized <> 'Yes'",
+        fields: ["FID", "ETR_B"],
         renderer: L.canvas(),
         precision: 4,
 	simplifyFactor: 1,
@@ -54,7 +56,7 @@
           let etr = feature.properties.ETR_B;
           if (etr == " ") etr = "🤷";
           etrs[etr] = '';
-          layer.bindPopup(`Circuit: ${feature.properties.Circuit}<br>Estimated Day of Restoration: ${etr}`);
+          layer.bindPopup(`Estimated Day of Restoration: ${etr}`);
         },
       })
       zones.on('load', function(e) {
