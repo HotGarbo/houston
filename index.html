@@ -28,7 +28,8 @@
   <body>
     <header>
       <h1>A Better Houston Power Outage Map</h1>
-      <p>The <a href="https://storymaps.arcgis.com/stories/195bcf03ae0c491f9f14bf77f2c43420" target="_blank">offical map</a> is bloated and its color scheme is disingenuous at best.<br>Here's a better one using the <a href="https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/ckts_714b/FeatureServer/0" target="_blank">same data</a>, as of July 14th 12:00 PM</p>
+      <p>The <a href="https://storymaps.arcgis.com/stories/195bcf03ae0c491f9f14bf77f2c43420" target="_blank">offical map</a> is bloated and its color scheme is disingenuous at best.<br>
+	Here's a better one using the <a href="https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/AshokaTano/FeatureServer/0" target="_blank">same data</a>, as of July 15th 8:00 AM</p>
     </header>
     <main id="map"></main>
     <footer>
@@ -45,15 +46,15 @@
 
       let etrs = {};
       let zones = L.esri.featureLayer({
-        url: 'https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/ckts_714b/FeatureServer/0/',
-        where: "Energized <> 'Yes'",
-        fields: ["FID", "ETR_B"],
+        url: 'https://services1.arcgis.com/uc3nOmrDRABFFgHJ/ArcGIS/rest/services/AshokaTano/FeatureServer/0/',
+        where: "Energizedc <> 'Yes'",
+        fields: ["FID", "ETR_C"],
         renderer: L.canvas(),
         precision: 4,
 	simplifyFactor: 1,
         style: {stroke: false},
         onEachFeature: function(feature, layer) {
-          let etr = feature.properties.ETR_B;
+          let etr = feature.properties.ETR_C;
           if (etr == " ") etr = "🤷";
           etrs[etr] = '';
           layer.bindPopup(`Estimated Day of Restoration: ${etr}`);
@@ -63,7 +64,7 @@
         let etrArr = Object.keys(etrs).sort();
         etrArr.forEach(function(e, i) { etrs[e] = 15 - Math.ceil(i*(15/etrArr.length))})
         e.target.eachFeature(function(f, e) {
-          let etr = f.feature.properties.ETR_B;
+          let etr = f.feature.properties.ETR_C;
           if (etr == " ") etr = "🤷";
           f.setStyle({fillColor: `#${etrs[etr].toString(16)}00`, fillOpacity: .666}) });
       });
